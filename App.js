@@ -1,10 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, TextInput} from 'react-native';
 import { Constants } from 'expo';
-import Slider from '@react-native-community/slider';
+import Slider from "react-native-slider";
 
 export default class App extends React.Component {
-  state = {language: ''}
+  state = {
+    distance: 1,
+    places: 1,
+    zip: ""
+  }
   render() {
 
     return (
@@ -13,25 +17,65 @@ export default class App extends React.Component {
         <View style={styles.topbar}>
           <Text style={{color:'white', fontSize: 15, fontWeight: "bold"}}>Dinner Decider</Text>
         </View>
-        <ScrollView horizontal={true} style={styles.flagScroll}>
-          {foodTypes.map((t,k) => {
-            return (
-                <TouchableOpacity key={t.id} style={styles.flagButton}>
-                  {t.src}
-                  <Text style={styles.flagButtonText}>{t.name}</Text>
-                </TouchableOpacity>
-            );
-          })}
-        </ScrollView>
-        <View>
-          <Text>Distance: </Text>
+        <View style={styles.flagScroll}>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+            {foodTypes.map((t,k) => {
+              return (
+                  <TouchableOpacity key={t.id} style={styles.flagButton}>
+                    {t.src}
+                    <Text style={styles.flagButtonText}>{t.name}</Text>
+                  </TouchableOpacity>
+              );
+            })}
+          </ScrollView>
+        </View>
+        <View style={{alignItems:"center", marginTop:15, marginBottom:15}}>
+          <Text style={styles.sliderText}>Zip Code</Text>
+          <TextInput
+            style={{backgroundColor:"#F2F2F2", width:100, height:35, textAlign:"center", fontSize:15}}
+            maxLength={5}
+            keyboardType="number-pad"
+            placeholder="Enter"
+            onChangeText={(zip) => this.setState({zip})}
+            value={this.state.zip}
+           >
+          </TextInput>
+        </View>
+        <View style={styles.hline}></View>
+        <View style={styles.sliderContainer}>
+          <Text style={styles.sliderText}>Within {this.state.distance} mile(s)</Text>
           <Slider
-              style={{width: 200, height: 40}}
-              minimumValue={0}
-              maximumValue={1}
-              minimumTrackTintColor="#FFFFFF"
-              maximumTrackTintColor="#000000"
-            />
+            minimumValue={1}
+            maximumValue={10}
+            step={1}
+            minimumTrackTintColor="#FC6E0B"
+            maximumTrackTintColor="#FA9D5C"
+            thumbTintColor="#FF964D"
+            thumbTouchSize={{width: 75, height: 75}}
+            value={this.state.distance}
+          onValueChange={distance => this.setState({ distance })}
+          />
+        </View>
+        <View style={styles.hline}></View>
+        <View style={styles.sliderContainer}>
+          <Text style={styles.sliderText}>Show me {this.state.places} places</Text>
+          <Slider
+            minimumValue={1}
+            maximumValue={10}
+            step={1}
+            minimumTrackTintColor="#FC6E0B"
+            maximumTrackTintColor="#FA9D5C"
+            thumbTintColor="#FF964D"
+            thumbTouchSize={{width: 75, height: 75}}
+            value={this.state.places}
+          onValueChange={places => this.setState({ places })}
+          />
+        </View>
+        <View style={styles.hline}></View>
+        <View style={{flex:1, alignItems:"stretch", width:250, marginTop:20}}>
+          <TouchableOpacity style={styles.Button}>
+            <Text style={styles.buttonText}>Decide Dinner</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -40,7 +84,7 @@ export default class App extends React.Component {
 
 const styles = StyleSheet.create({
   statusBar:{
-    backgroundColor: '#00416d',
+    backgroundColor: '#FA9D5C',
     height: Constants.statusBarHeight,
     width: '100%'
   },
@@ -48,10 +92,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    
+    width: "100%"
   },
   topbar:{
-    backgroundColor: '#00416d',
+    backgroundColor: '#FA9D5C',
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
@@ -59,7 +103,7 @@ const styles = StyleSheet.create({
   },
 
   flagButton:{
-    padding:7,
+    padding:10,
     alignItems:"center"
   },
   flag:{
@@ -67,11 +111,46 @@ const styles = StyleSheet.create({
     height: 40
   },
   flagButtonText:{
-
+    color: "gray"
   },
   flagScroll:{
-    height: 60,
-    backgroundColor: '#F8F8F8'
+    height: 85,
+    padding:5,
+    borderBottomColor:"#F2F2F2",
+    borderBottomWidth:1
+  },
+  sliderContainer:{
+    alignItems:"stretch",
+    justifyContent:"center",
+    width:250,
+    height: 100
+  },
+
+  Button:{
+    backgroundColor: '#FA9D5C',
+    padding: 10,
+    height: 55,
+    width: 250,
+    borderRadius: 50,
+    alignItems:"center",
+    justifyContent:"center"
+  },
+  buttonText:{
+    color: "white",
+    fontSize: 20,
+    fontWeight: "bold",
+    letterSpacing: 2
+  },
+  sliderText:{
+      color: "gray",
+      fontSize: 18,
+
+  },
+  hline:{
+    borderBottomColor:"#F2F2F2",
+    borderBottomWidth:1,
+    width:"100%",
+    height:1
   }
 
 });
