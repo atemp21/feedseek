@@ -1,14 +1,27 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, TextInput} from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, TextInput, Alert} from 'react-native';
 import { Constants } from 'expo';
 import Slider from "react-native-slider";
 
 export default class Home extends React.Component {
+  constructor(props){
+    super(props);
+
+  }
   state = {
     distance: 1,
     places: 1,
-    zip: ""
+    zip: "",
+    selected:"",
+    active: 0
+  };
+
+  flagToggle(name, id){
+   this.setState({selected: name});
+    this.setState({active: id})
+    console.log('name', name, 'active', id)
   }
+
   render() {
     return (
       <View style={styles.maincontainer}>
@@ -20,7 +33,8 @@ export default class Home extends React.Component {
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             {foodTypes.map((t,k) => {
               return (
-                  <TouchableOpacity key={t.id} style={styles.flagButton}>
+                  <TouchableOpacity  key={t.id} style={this.state.active === t.id ? styles.flagButtonActive : styles.flagButton} 
+                  onPress={this.flagToggle.bind(this, t.name, t.id)}>
                     {t.src}
                     <Text style={styles.flagButtonText}>{t.name}</Text>
                   </TouchableOpacity>
@@ -105,6 +119,13 @@ const styles = StyleSheet.create({
     padding:10,
     alignItems:"center"
   },
+  flagButtonActive:{
+    padding:10,
+    alignItems:"center",
+    borderColor: "blue",
+    borderLeftWidth:1,
+    borderRightWidth: 1
+  },
   flag:{
     width: 40,
     height: 40
@@ -155,11 +176,11 @@ const styles = StyleSheet.create({
 });
 
 const foodTypes = [
-  {
-    id:0,
-    name:"All",
-    src:<Image source={require('./assets/flags/all.png')} style={styles.flag}/>
-  },
+  // {
+  //   id:0,
+  //   name:"All",
+  //   src:<Image source={require('./assets/flags/all.png')} style={styles.flag}/>
+  // },
   {
     id: 1,
     name: "American",
