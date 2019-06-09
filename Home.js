@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, TextInput, Alert} from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, TextInput} from 'react-native';
 import { Constants } from 'expo';
 import Slider from "react-native-slider";
 
@@ -8,6 +8,10 @@ export default class Home extends React.Component {
     super(props);
 
   }
+  static navigationOptions = {
+    title: 'Home'
+  };
+
   state = {
     distance: 1,
     places: 1,
@@ -17,26 +21,36 @@ export default class Home extends React.Component {
   };
 
   flagToggle(name, id){
-   this.setState({selected: name});
-    this.setState({active: id})
-    console.log('name', name, 'active', id)
+    if(this.state.selected === name){
+      this.setState({selected: ''});
+    }else{
+      this.setState({selected: name});
+    }
+   
+    if(this.state.active === id){
+      this.setState({active: 0});
+    }else{
+      this.setState({active: id});
+    }
+    //console.log('name', this.state.selected, 'active', this.state.active)
+  }
+
+  goToList(){
   }
 
   render() {
+    const { navigation } = this.props;
+
     return (
       <View style={styles.maincontainer}>
-        <View style={styles.statusBar}></View>
-        <View style={styles.topbar}>
-          <Text style={{color:'white', fontSize: 15, fontWeight: "bold"}}>Dinner Decider</Text>
-        </View>
         <View style={styles.flagScroll}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             {foodTypes.map((t,k) => {
               return (
-                  <TouchableOpacity  key={t.id} style={this.state.active === t.id ? styles.flagButtonActive : styles.flagButton} 
+                  <TouchableOpacity  key={t.id} style={styles.flagButton} 
                   onPress={this.flagToggle.bind(this, t.name, t.id)}>
                     {t.src}
-                    <Text style={styles.flagButtonText}>{t.name}</Text>
+                    <Text style={this.state.active == t.id ? styles.flagButtonTextActive : styles.flagButtonText}>{t.name}</Text>
                   </TouchableOpacity>
               );
             })}
@@ -71,7 +85,7 @@ export default class Home extends React.Component {
         </View>
         <View style={styles.hline}></View>
         <View style={styles.sliderContainer}>
-          <Text style={styles.sliderText}>Show me {this.state.places} places</Text>
+          <Text style={styles.sliderText}>Show me {this.state.places} place(s)</Text>
           <Slider
             minimumValue={1}
             maximumValue={10}
@@ -86,7 +100,13 @@ export default class Home extends React.Component {
         </View>
         <View style={styles.hline}></View>
         <View style={{flex:1, alignItems:"stretch", width:250, marginTop:20}}>
-          <TouchableOpacity style={styles.Button}>
+          <TouchableOpacity style={styles.Button} 
+          onPress={()=>{navigation.navigate('List', {
+            selected: this.state.selected,
+            location: this.state.zip,
+            distance: this.state.distance,
+            number: this.state.places
+          })}}>
             <Text style={styles.buttonText}>Decide Dinner</Text>
           </TouchableOpacity>
         </View>
@@ -119,19 +139,16 @@ const styles = StyleSheet.create({
     padding:10,
     alignItems:"center"
   },
-  flagButtonActive:{
-    padding:10,
-    alignItems:"center",
-    borderColor: "blue",
-    borderLeftWidth:1,
-    borderRightWidth: 1
-  },
+  
   flag:{
     width: 40,
     height: 40
   },
   flagButtonText:{
     color: "gray"
+  },
+  flagButtonTextActive:{
+    color: '#48a5e2'
   },
   flagScroll:{
     height: 85,
