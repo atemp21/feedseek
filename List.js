@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, FlatList } from 'react-native';
 import { Constants } from 'expo';
 
 export default class List extends React.Component {
@@ -12,7 +12,8 @@ export default class List extends React.Component {
     };
 
     state = {
-        isLoading: true
+        isLoading: true,
+        places: []
     }
 
     componentDidMount() {
@@ -25,15 +26,30 @@ export default class List extends React.Component {
     number = this.props.navigation.getParam('number');
 
     getData() {
-        return fetch('url')
+        url = "https://api.yelp.com/v3/businesses/search?term=restaurants";
+        url += "&location="+this.location;
+        url += "&radius="+(this.distance*1609);
+        url+= "&limit="+this.number;
+
+        if(this.type != ""){
+            url+="&categories="+this.type;
+        }
+        url+="&sort_by=rating&open_now=true";
+
+        return fetch(url,{
+            method: 'get',
+            headers: {
+                'Authorization': 'Bearer 1hT3jiJGfC5LFWa45U_qSBnxsWfCJs3bkBf-z1GsVo5ZHmPDX_TcS2oNZLV7B1Rkem7y1TuVt4wwaoqsMIVmmPU3CNWZvoseRJ_Vn75dyufuODh3Z55QKrP2m5DVXHYx'
+            }
+        })
             .then((response) => response.json())
             .then((responseJson) => {
 
                 this.setState({
                     isLoading: false,
-                    dataSource: responseJson
+                    places: responseJson.businesses
                 }, function () {
-
+                    console.log(this.state.places)
                 });
             })
             .catch((error)=>{
@@ -51,7 +67,17 @@ export default class List extends React.Component {
         }
         return (
             <View>
-                <Text>List component</Text>
+                <FlatList 
+                    data={this.state.places}
+                    renderItem = {
+                        ({item, index})=>
+                        <Text >{item.name}</Text>
+                    }
+                    keyExtractor={(item, index)=>index.toString()}
+                    ListEmptyComponent={()=>
+                    <Text>Nothing Here</Text>
+                    }
+                />
             </View>
         );
     }
