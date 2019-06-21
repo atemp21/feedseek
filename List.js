@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, ActivityIndicator, FlatList } from 'react-native';
-import { Constants } from 'expo';
+import { StyleSheet, Text, View, ActivityIndicator, FlatList, Image, TouchableOpacity } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default class List extends React.Component {
     constructor(props) {
@@ -66,24 +66,70 @@ export default class List extends React.Component {
             );
         }
         return (
-            <View>
+            <ScrollView>
                 <FlatList 
                     data={this.state.places}
                     renderItem = {
                         ({item, index})=>
-                        <Text >{item.name}</Text>
+                        <TouchableOpacity style={styles.place}>
+                            <Image style={styles.place_image} source={{uri: item.image_url}}/>
+                            <View style={styles.text_box}>
+                                <Text style={styles.place_name}>{item.name}</Text>
+                                <Text style={styles.place_cat}>{item.categories[1].title}</Text>
+                                <Text style={styles.place_rating}>rating: {item.rating}</Text>
+                            </View>
+                        </TouchableOpacity>
                     }
                     keyExtractor={(item, index)=>index.toString()}
                     ListEmptyComponent={()=>
-                    <Text>Nothing Here</Text>
+                    <View style={styles.no_results}>
+                        <Text style={styles.no_results_text}>No Results to Show</Text>
+                        <Text style={styles.no_results_text}>Try Again</Text>
+                    </View>
                     }
                 />
-            </View>
+            </ScrollView>
         );
     }
 
 }
 
 const styles = StyleSheet.create({
-
+    place:{
+        borderBottomColor: '#F2F2F2',
+        borderBottomWidth: 1,
+        flex:1,
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
+    text_box:{
+        marginLeft: 10,
+        flex: 1,
+        justifyContent: 'center'
+    },
+    place_image:{
+        width: 100,
+        height: 100
+    },
+    place_name:{
+        fontSize: 20,
+        color: '#a8a8a8',
+        fontWeight: 'bold'
+    },
+    place_cat:{
+        color: '#b5b5b5'
+    },
+    place_rating:{
+        color: '#b5b5b5'
+    },
+    no_results:{
+        flex: 1,
+        justifyContent:'center',
+        alignItems:'center',
+    },
+    no_results_text:{
+        fontSize: 20,
+        color: '#a8a8a8',
+        fontWeight: 'bold'
+    }
 });
