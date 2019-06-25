@@ -49,7 +49,7 @@ export default class List extends React.Component {
                     isLoading: false,
                     places: responseJson.businesses
                 }, function () {
-                    console.log(this.state.places)
+                    //console.log(this.state.places)
                 });
             })
             .catch((error)=>{
@@ -58,6 +58,8 @@ export default class List extends React.Component {
     }
 
     render() {
+        const { navigation } = this.props;
+
         if (this.state.isLoading) {
             return (
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -71,7 +73,7 @@ export default class List extends React.Component {
                     data={this.state.places}
                     renderItem = {
                         ({item, index})=>
-                        <TouchableOpacity style={styles.place}>
+                        <TouchableOpacity style={styles.place} onPress={()=>navigation.navigate('Place',{place: this.state.places[index]})}>
                             <Image style={styles.place_image} source={{uri: item.image_url}}/>
                             <View style={styles.text_box}>
                                 <Text style={styles.place_name}>{item.name}</Text>

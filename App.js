@@ -1,6 +1,7 @@
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import Home from './Home';
 import List from './List';
+import Place from './Place';
 
 const MainNavigator = createStackNavigator({
   Home: {
@@ -9,6 +10,9 @@ const MainNavigator = createStackNavigator({
   List: {
     screen: List,
   },
+  Place: {
+    screen: Place
+  }
 },
 {
   initialRouteName: 'Home',
