@@ -107,7 +107,7 @@ export default class Home extends React.Component {
             distance: this.state.distance,
             number: this.state.places
           })}}>
-            <Text style={styles.buttonText}>Decide Dinner</Text>
+            <Text style={styles.buttonText}>See Results</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
   },
 
   Button:{
-    backgroundColor: '#FA9D5C',
+    backgroundColor: '#FC6E0B',
     padding: 10,
     height: 55,
     width: 250,
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 20,
     fontWeight: "bold",
-    letterSpacing: 2
+    letterSpacing: 1
   },
   sliderText:{
       color: "gray",

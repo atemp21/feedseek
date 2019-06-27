@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, Linking } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, Linking, Platform } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 
@@ -15,35 +15,53 @@ export default class Place extends React.Component {
     };
 
     state = {
-        stars: ''
+        stars: [],
+        cat: ''
     }
 
     componentDidMount(){
-        console.log(this.place)
+        //console.log(this.place)
         this.get_stars();
+        if(this.place.categories[1]) this.setState({cat: this.place.categories[1].title})
+                        else this.setState({cat: this.place.categories[0].title})
     }
 
-    call(){
-
+    call=()=>{
+        Linking.canOpenURL(`tel:${this.place.phone}`)
+        .then((supported) => {
+            if (!supported) {
+            Alert.arert("Unable to place call");
+            } else {
+            return Linking.openURL(`tel:${this.place.phone}`);
+            }
+        })
+        Alert.arert("Unable to place call");
     }
 
-    get_directions(){
-
+    get_directions=()=>{
+        const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
+            const latLng = `${this.place.coordinates.latitude},${this.place.coordinates.longitude}`;
+            const label = 'Custom Label';
+            const url = Platform.select({
+            ios: `${scheme}${label}@${latLng}`,
+            android: `${scheme}${latLng}(${label})`
+            });
+        Linking.openURL(url);
     }
 
-    go_to_yelp(){
+    go_to_yelp = () =>{
         Linking.canOpenURL(this.place.url)
         .then((supported) => {
             if (!supported) {
-            console.log("Can't handle url: " + this.place.url);
+                Alert.arert("Unable to go to Yelp");
             } else {
             return Linking.openURL(this.place.url);
             }
         })
-        .catch((err) => console.error('An error occurred', err));
+        Alert.arert("Unable to go to Yelp");
     }
 
-    get_stars(){
+    get_stars = ()=>{
         path='';
         switch(this.place.rating){
             case 0:
@@ -77,8 +95,12 @@ export default class Place extends React.Component {
                 path=require('./assets/yelp_stars/stars_small_5.png');
             break;
         }
-
-        this.setState({stars: [path]});
+       
+        this.setState({stars: path})
+        // console.log("path"+path);
+        // console.log("stars"+this.state.stars)
+        // console.log(this.place.rating)
+        
     }
 
     render(){
@@ -88,23 +110,28 @@ export default class Place extends React.Component {
                 <View style={styles.image_view}>
                     <Image style={styles.image} resizeMode='cover' source={{uri: this.place.image_url}}/>
                 </View>
+                <Text style={styles.title}>{this.place.name}</Text>
                 <View style={styles.title_view}>
-                    <Text style={styles.title}>{this.place.name}</Text>
-                    <Image source={this.state.stars}/><Text style={styles.rating}>{this.place.review_count} reviews from Yelp</Text>
-                    <Text style={styles.price}>Price: <Text style={{color:'green'}}>{this.place.price}</Text></Text>
-                    <Text style={styles.distance}>Distance: {(this.place.distance/1609.34).toFixed(2)} mi</Text>
+                    <View style={{flex: 1, flexDirection:'column'}}>
+                        
+                        <Image source={this.state.stars}/><Text style={styles.rating}>{this.place.review_count} reviews from Yelp</Text>
+                        <Text style={styles.price}>Price: <Text style={{color:'green'}}>{this.place.price}</Text></Text>
+                        <Text style={styles.distance}>Distance: {(this.place.distance/1609.34).toFixed(2)} mi</Text>
+                        <Text style={styles.distance}>{this.state.cat}</Text>
+                    </View>
+                    <View style={styles.yelp}>
+                        <TouchableOpacity style={{flex:1, flexDirection:'column', alignItems:'center'}} onPress={this.go_to_yelp}>
+                            <Image style={{width: 85, height: 75}} source={require('./assets/Yelp_trademark_RGB_outline.png')}/>
+                            <Text style={{color:'gray', fontSize:15, marginLeft:5}}>See more on Yelp</Text>
+                        </TouchableOpacity>
+                     </View>
                 </View>
                 <View style={styles.contact_view}>
                     <Text style={styles.phone}>{this.place.display_phone}</Text>
-                    <Text style={styles.address1}>{this.place.address} {this.place.address2}</Text>
-                    <Text style={styles.address2}>{this.place.city} {this.place.state} {this.place.zip}</Text>
+                    <Text style={styles.phone}>{this.place.location.display_address[0]} </Text>
+                    <Text style={styles.phone}>{this.place.location.display_address[1]} </Text>
                 </View>
-                <View style={styles.yelp}>
-                    <TouchableOpacity style={{flex:1, flexDirection:'row', alignItems:'center'}} onPress={this.go_to_yelp}>
-                         <Image style={{width: 85, height: 75}} source={require('./assets/Yelp_trademark_RGB_outline.png')}/>
-                         <Text style={{color:'gray', fontSize:15, marginLeft:5}}>See more on Yelp</Text>
-                    </TouchableOpacity>
-                </View>
+
                 <View style={styles.button_view}>
                     <TouchableOpacity style={styles.call} onPress={this.call}>
                         <Text style={styles.button_text}>Call Now</Text>
@@ -126,8 +153,9 @@ const styles = StyleSheet.create({
         alignItems:'stretch'
     },
     title_view:{
-        padding: 10
-        
+        padding: 10,
+        flex:1,
+        flexDirection:'row'
     },
     image:{
         width: '100%',
@@ -197,6 +225,7 @@ const styles = StyleSheet.create({
     yelp:{
         flex:1,
         flexDirection:'row',
-        paddingLeft: 20
+        paddingLeft: 20,
+        alignItems: 'center'
     }
 });

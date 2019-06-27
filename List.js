@@ -13,11 +13,9 @@ export default class List extends React.Component {
 
     state = {
         isLoading: true,
-        places: []
-    }
-
-    componentDidMount() {
-        this.getData();
+        places: [],
+        stars:[],
+        categories:[]
     }
 
     type = this.props.navigation.getParam('selected');
@@ -25,17 +23,26 @@ export default class List extends React.Component {
     distance = this.props.navigation.getParam('distance');
     number = this.props.navigation.getParam('number');
 
-    getData() {
+    componentDidMount() {
+        this.getData();
+        // console.log(this.type);
+        // console.log(this.distance);
+        // console.log(this.location);
+        // console.log(this.number);
+    }
+
+
+    getData=()=> {
         url = "https://api.yelp.com/v3/businesses/search?term=restaurants";
         url += "&location="+this.location;
         url += "&radius="+(this.distance*1609);
         url+= "&limit="+this.number;
 
         if(this.type != ""){
-            url+="&categories="+this.type;
+            url+="&categories="+this.type.toLowerCase();
         }
-        url+="&sort_by=rating&open_now=true";
-
+        
+        console.log(url)
         return fetch(url,{
             method: 'get',
             headers: {
@@ -46,15 +53,63 @@ export default class List extends React.Component {
             .then((responseJson) => {
 
                 this.setState({
-                    isLoading: false,
                     places: responseJson.businesses
                 }, function () {
                     //console.log(this.state.places)
+                    this.state.places.forEach(p => {
+                        this.get_stars(p.rating);
+                        if(p.categories[1]) this.state.categories.push(p.categories[1].title)
+                        else this.state.categories.push(p.categories[0].title)
+                    });
+                    this.setState({isLoading: false});
                 });
             })
             .catch((error)=>{
                 console.error(error);
             });
+    }
+
+
+    get_stars = (rating)=>{
+        path='';
+        switch(rating){
+            case 0:
+                path=require('./assets/yelp_stars/stars_small_0.png');
+            break;
+            case 1:
+                path=require('./assets/yelp_stars/stars_small_1.png');
+            break;
+            case 1.5:
+                path=require('./assets/yelp_stars/stars_small_1_half.png');
+            break;
+            case 2:
+                path=require('./assets/yelp_stars/stars_small_2.png');
+            break;
+            case 2.5: 
+                path=require('./assets/yelp_stars/stars_small_2_half.png');
+            break;
+            case 3:
+                path=require('./assets/yelp_stars/stars_small_3.png');
+            break;
+            case 3.5: 
+                path=require('./assets/yelp_stars/stars_small_3_half.png');
+            break;
+            case 4:
+                path=require('./assets/yelp_stars/stars_small_4.png');
+            break;
+            case 4.5:
+                path=require('./assets/yelp_stars/stars_small_4_half.png');
+            break;
+            case 5:
+                path=require('./assets/yelp_stars/stars_small_5.png');
+            break;
+        }
+       
+        this.state.stars.push(path)
+        // console.log("path"+path);
+        // console.log("stars"+this.state.stars)
+        // console.log(this.place.rating)
+        
     }
 
     render() {
@@ -77,8 +132,9 @@ export default class List extends React.Component {
                             <Image style={styles.place_image} source={{uri: item.image_url}}/>
                             <View style={styles.text_box}>
                                 <Text style={styles.place_name}>{item.name}</Text>
-                                <Text style={styles.place_cat}>{item.categories[1].title}</Text>
-                                <Text style={styles.place_rating}>rating: {item.rating}</Text>
+                                <Text style={styles.place_cat}>{this.state.categories[index]}</Text>
+                                <Image source={this.state.stars[index]}/>
+                                <Text style={styles.place_rating}>{item.review_count} ratings from Yelp</Text>
                             </View>
                         </TouchableOpacity>
                     }
@@ -115,14 +171,15 @@ const styles = StyleSheet.create({
     },
     place_name:{
         fontSize: 20,
-        color: '#a8a8a8',
+        color: '#545454',
         fontWeight: 'bold'
     },
     place_cat:{
-        color: '#b5b5b5'
+        color: 'gray'
     },
     place_rating:{
-        color: '#b5b5b5'
+        color: 'gray',
+        fontSize:11
     },
     no_results:{
         flex: 1,
@@ -131,7 +188,7 @@ const styles = StyleSheet.create({
     },
     no_results_text:{
         fontSize: 20,
-        color: '#a8a8a8',
+        color: '#545454',
         fontWeight: 'bold'
     }
 });
