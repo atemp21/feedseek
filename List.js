@@ -22,6 +22,7 @@ export default class List extends React.Component {
     location = this.props.navigation.getParam('location');
     distance = this.props.navigation.getParam('distance');
     number = this.props.navigation.getParam('number');
+    coords = this.props.navigation.getParam('coords');
 
     componentDidMount() {
         this.getData();
@@ -29,12 +30,18 @@ export default class List extends React.Component {
         // console.log(this.distance);
         // console.log(this.location);
         // console.log(this.number);
+        console.log(this.coords);
     }
 
 
     getData=()=> {
         url = "https://api.yelp.com/v3/businesses/search?term=restaurants";
-        url += "&location="+this.location;
+        if(this.coords != null){
+            url+="&latitude="+this.coords.coords.latitude;
+            url+="&longitude="+this.coords.coords.longitude;
+        }else{
+            url += "&location="+this.location;
+        }
         url += "&radius="+(this.distance*1609);
         url+= "&limit="+this.number;
 

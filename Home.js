@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, TextInput} from 'react-native';
-import { Constants } from 'expo';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, TextInput, Alert} from 'react-native';
+import { Constants, Location, Permissions } from 'expo';
 import Slider from "react-native-slider";
 
 export default class Home extends React.Component {
@@ -15,9 +15,26 @@ export default class Home extends React.Component {
   state = {
     distance: 1,
     places: 1,
-    zip: "",
+    zip: null,
     selected:"",
-    active: 0
+    active: 0,
+    location: null
+  };
+
+  componentDidMount(){
+    this._getLocationAsync();
+  }
+  _getLocationAsync = async () => {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted') {
+      this.setState({
+        errorMessage: 'Permission to access location was denied',
+      });
+    }
+
+    let location = await Location.getCurrentPositionAsync({distanceInterval:1000});
+    this.setState({ location });
+    //console.log(location);
   };
 
   flagToggle(name, id){
@@ -35,8 +52,6 @@ export default class Home extends React.Component {
     //console.log('name', this.state.selected, 'active', this.state.active)
   }
 
-  goToList(){
-  }
 
   render() {
     const { navigation } = this.props;
@@ -56,18 +71,29 @@ export default class Home extends React.Component {
             })}
           </ScrollView>
         </View>
-        <View style={{alignItems:"center", marginTop:15, marginBottom:15}}>
-          <Text style={styles.sliderText}>Zip Code</Text>
-          <TextInput
-            style={{backgroundColor:"#F2F2F2", width:100, height:35, textAlign:"center", fontSize:15}}
-            maxLength={5}
-            keyboardType="number-pad"
-            placeholder="Enter"
-            onChangeText={(zip) => this.setState({zip})}
-            value={this.state.zip}
-           >
-          </TextInput>
-        </View>
+        
+          {(()=>{
+            if(this.state.location != null){
+              return(
+              <View style={{alignItems:"center", marginTop:15, marginBottom:15}}>
+              <Text style={styles.sliderText}>App is using your location</Text>
+              </View>)
+            }else{
+              return(
+              <View style={{alignItems:"center", marginTop:15, marginBottom:15}}>
+              <Text style={styles.sliderText}>Zip Code</Text>
+              <TextInput
+                style={{backgroundColor:"#F2F2F2", width:100, height:35, textAlign:"center", fontSize:15}}
+                maxLength={5}
+                keyboardType="number-pad"
+                placeholder="Enter"
+                onChangeText={(zip) => this.setState({zip})}
+                value={this.state.zip}
+              >
+              </TextInput>
+               </View>)
+            }
+          })()} 
         <View style={styles.hline}></View>
         <View style={styles.sliderContainer}>
           <Text style={styles.sliderText}>Within {this.state.distance} mile(s)</Text>
@@ -101,12 +127,27 @@ export default class Home extends React.Component {
         <View style={styles.hline}></View>
         <View style={{flex:1, alignItems:"stretch", width:250, marginTop:20}}>
           <TouchableOpacity style={styles.Button} 
-          onPress={()=>{navigation.navigate('List', {
+          onPress={()=>{
+            if(this.state.location != null || this.state.zip != null){
+            navigation.navigate('List', {
             selected: this.state.selected,
             location: this.state.zip,
             distance: this.state.distance,
-            number: this.state.places
-          })}}>
+            number: this.state.places,
+            coords: this.state.location
+            
+          })
+        }else{
+          Alert.alert(
+            "Where are you?",
+            "Enter your Zip Code or allow location",
+            [
+              {text: 'Enable Location', onPress: ()=> this._getLocationAsync()},
+              {text: 'OK'}
+            ]
+            );
+        }
+        }}>
             <Text style={styles.buttonText}>See Results</Text>
           </TouchableOpacity>
         </View>
