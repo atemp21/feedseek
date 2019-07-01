@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Dinner Decider",
-    "slug": "DinnerDecider",
+    "name": "FeedSeek",
+    "slug": "feed-seek",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": [
@@ -14,7 +14,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#3A414B"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

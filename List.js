@@ -178,14 +178,14 @@ const styles = StyleSheet.create({
     },
     place_name:{
         fontSize: 20,
-        color: '#545454',
+        color: '#220C10',
         fontWeight: 'bold'
     },
     place_cat:{
-        color: 'gray'
+        color: '#3A414B'
     },
     place_rating:{
-        color: 'gray',
+        color: '#3A414B',
         fontSize:11
     },
     no_results:{
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
     },
     no_results_text:{
         fontSize: 20,
-        color: '#545454',
+        color: '#220C10',
         fontWeight: 'bold'
     }
 });

@@ -76,7 +76,7 @@ export default class Home extends React.Component {
             if(this.state.location != null){
               return(
               <View style={{alignItems:"center", marginTop:15, marginBottom:15}}>
-              <Text style={styles.sliderText}>App is using your location</Text>
+              <Text style={styles.sliderText}>FeedSeek is using your location</Text>
               </View>)
             }else{
               return(
@@ -101,9 +101,9 @@ export default class Home extends React.Component {
             minimumValue={1}
             maximumValue={10}
             step={1}
-            minimumTrackTintColor="#FC6E0B"
-            maximumTrackTintColor="#FA9D5C"
-            thumbTintColor="#FF964D"
+            minimumTrackTintColor="#009BDB"
+            maximumTrackTintColor="#CFD9EE"
+            thumbTintColor="#FB5A62"
             thumbTouchSize={{width: 75, height: 75}}
             value={this.state.distance}
           onValueChange={distance => this.setState({ distance })}
@@ -116,9 +116,9 @@ export default class Home extends React.Component {
             minimumValue={1}
             maximumValue={10}
             step={1}
-            minimumTrackTintColor="#FC6E0B"
-            maximumTrackTintColor="#FA9D5C"
-            thumbTintColor="#FF964D"
+            minimumTrackTintColor="#009BDB"
+            maximumTrackTintColor="#CFD9EE"
+            thumbTintColor="#FB5A62"
             thumbTouchSize={{width: 75, height: 75}}
             value={this.state.places}
           onValueChange={places => this.setState({ places })}
@@ -158,7 +158,7 @@ export default class Home extends React.Component {
 
 const styles = StyleSheet.create({
   statusBar:{
-    backgroundColor: '#FA9D5C',
+    backgroundColor: '#009BDB',
     height: Constants.statusBarHeight,
     width: '100%'
   },
@@ -186,10 +186,10 @@ const styles = StyleSheet.create({
     height: 40
   },
   flagButtonText:{
-    color: "gray"
+    color: "#3A414B"
   },
   flagButtonTextActive:{
-    color: '#48a5e2'
+    color: '#009BDB'
   },
   flagScroll:{
     height: 85,
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
   },
 
   Button:{
-    backgroundColor: '#FC6E0B',
+    backgroundColor: '#009BDB',
     padding: 10,
     height: 55,
     width: 250,
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1
   },
   sliderText:{
-      color: "gray",
+      color: "#3A414B",
       fontSize: 18,
 
   },

@@ -165,30 +165,30 @@ const styles = StyleSheet.create({
     title:{
         fontSize: 28, 
         fontWeight: 'bold',
-        color: '#545454'
+        color: '#220C10'
     },
     rating:{
         fontSize: 11,
-        color: 'gray'
+        color: '#3A414B'
     },
     price:{
         fontSize: 17,
-        color: 'gray'
+        color: '#3A414B'
     },
     distance:{
         fontSize: 17,
-        color: 'gray'
+        color: '#3A414B'
     },
     contact_view:{
         padding:10
     },
     phone:{
         fontSize: 17,
-        color: 'gray'
+        color: '#3A414B'
     },
     address:{
         fontSize: 17,
-        color: 'gray'
+        color: '#3A414B'
     },
     button_view:{
         flex:1,
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
         justifyContent:'center'
     },
     call:{
-        backgroundColor:'#76a8f7',
+        backgroundColor:'#009BDB',
         width: 150,
         height: 50,
         padding: 10,
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
         margin: 5
     },
     directions:{
-        backgroundColor:'#2acc53',
+        backgroundColor:'#FB5A62',
         width: 150,
         height: 50,
         padding: 10,
