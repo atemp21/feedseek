@@ -1,6 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, Linking, Platform } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import {
+    AdMobBanner,
+    AdMobInterstitial,
+    PublisherBanner,
+    AdMobRewarded
+  } from 'expo-ads-admob';
 
 
 export default class Place extends React.Component {
@@ -140,6 +146,11 @@ export default class Place extends React.Component {
                         <Text style={styles.button_text}>Get Directions</Text>
                     </TouchableOpacity>
                 </View>
+                <AdMobBanner
+                bannerSize="fullBanner"
+                adUnitID="ca-app-pub-3940256099942544/6300978111" // Test ID, Replace with your-admob-unit-id
+                testDeviceID="EMULATOR"
+                onDidFailToReceiveAdWithError={(e)=>this.bannerError(e)} />
             </ScrollView>
         );
     }

@@ -2,6 +2,12 @@ import React from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, TextInput, Alert} from 'react-native';
 import { Constants, Location, Permissions } from 'expo';
 import Slider from "react-native-slider";
+import {
+  AdMobBanner,
+  AdMobInterstitial,
+  PublisherBanner,
+  AdMobRewarded
+} from 'expo-ads-admob';
 
 export default class Home extends React.Component {
   constructor(props){
@@ -151,6 +157,11 @@ export default class Home extends React.Component {
             <Text style={styles.buttonText}>See Results</Text>
           </TouchableOpacity>
         </View>
+        <AdMobBanner
+        bannerSize="fullBanner"
+        adUnitID="ca-app-pub-3940256099942544/6300978111" // Test ID, Replace with your-admob-unit-id
+        testDeviceID="EMULATOR"
+        onDidFailToReceiveAdWithError={(e)=>this.bannerError(e)} />
       </View>
     );
   }
