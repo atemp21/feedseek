@@ -23,12 +23,14 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier":"com.temptech.feedseek",
       "supportsTablet": true,
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Allow this app to use your location for nearby restaurants?"
       }
     },
     "android":{
+      "package" :"com.temptech.feedseek",
       "permissions":["ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION"]
     }

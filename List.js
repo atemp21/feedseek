@@ -161,7 +161,7 @@ export default class List extends React.Component {
                 />
                 <AdMobBanner
                 bannerSize="fullBanner"
-                adUnitID="ca-app-pub-3940256099942544/6300978111" // Test ID, Replace with your-admob-unit-id
+                adUnitID="ca-app-pub-8102320953027550/8784654725" // Test ID, Replace with your-admob-unit-id
                 testDeviceID="EMULATOR"
                 onDidFailToReceiveAdWithError={(e)=>this.bannerError(e)} />
             </ScrollView>
