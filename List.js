@@ -1,12 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, ActivityIndicator, FlatList, Image, TouchableOpacity } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import {
-    AdMobBanner,
-    AdMobInterstitial,
-    PublisherBanner,
-    AdMobRewarded
-  } from 'expo-ads-admob';
+
 
 export default class List extends React.Component {
     constructor(props) {
@@ -131,7 +126,7 @@ export default class List extends React.Component {
         if (this.state.isLoading) {
             return (
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    <ActivityIndicator color='#FA9D5C' size='large' />
+                    <ActivityIndicator color='#009BDB' size='large' />
                 </View>
             );
         }
@@ -159,11 +154,11 @@ export default class List extends React.Component {
                     </View>
                     }
                 />
-                <AdMobBanner
+                {/* <AdMobBanner
                 bannerSize="fullBanner"
                 adUnitID="ca-app-pub-8102320953027550/8784654725" // Test ID, Replace with your-admob-unit-id
                 testDeviceID="EMULATOR"
-                onDidFailToReceiveAdWithError={(e)=>this.bannerError(e)} />
+                onDidFailToReceiveAdWithError={(e)=>this.bannerError(e)} /> */}
             </ScrollView>
         );
     }
