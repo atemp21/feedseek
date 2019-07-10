@@ -28,15 +28,7 @@ export default class Place extends React.Component {
     }
 
     call=()=>{
-        Linking.canOpenURL(`tel:${this.place.phone}`)
-        .then((supported) => {
-            if (!supported) {
-            Alert.arert("Unable to place call");
-            } else {
-            return Linking.openURL(`tel:${this.place.phone}`);
-            }
-        })
-        Alert.arert("Unable to place call");
+     Linking.openURL(`tel: ${this.place.phone}`);
     }
 
     get_directions=()=>{
@@ -51,15 +43,8 @@ export default class Place extends React.Component {
     }
 
     go_to_yelp = () =>{
-        Linking.canOpenURL(this.place.url)
-        .then((supported) => {
-            if (!supported) {
-                Alert.arert("Unable to go to Yelp");
-            } else {
-            return Linking.openURL(this.place.url);
-            }
-        })
-        Alert.arert("Unable to go to Yelp");
+         Linking.openURL(this.place.url);
+   
     }
 
     get_stars = ()=>{
