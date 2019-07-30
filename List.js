@@ -154,11 +154,6 @@ export default class List extends React.Component {
                     </View>
                     }
                 />
-                {/* <AdMobBanner
-                bannerSize="fullBanner"
-                adUnitID="ca-app-pub-8102320953027550/8784654725" // Test ID, Replace with your-admob-unit-id
-                testDeviceID="EMULATOR"
-                onDidFailToReceiveAdWithError={(e)=>this.bannerError(e)} /> */}
             </ScrollView>
         );
     }

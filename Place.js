@@ -126,11 +126,6 @@ export default class Place extends React.Component {
                         <Text style={styles.button_text}>Get Directions</Text>
                     </TouchableOpacity>
                 </View>
-                {/* <AdMobBanner
-                bannerSize="fullBanner"
-                adUnitID="ca-app-pub-8102320953027550/8784654725" // Test ID, Replace with your-admob-unit-id
-                testDeviceID="EMULATOR"
-                onDidFailToReceiveAdWithError={(e)=>this.bannerError(e)} /> */}
             </ScrollView>
         );
     }
