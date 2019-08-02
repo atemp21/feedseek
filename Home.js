@@ -151,6 +151,11 @@ export default class Home extends React.Component {
             <Text style={styles.buttonText}>See Results</Text>
           </TouchableOpacity>
         </View>
+        <View style={{flex:1,  marginTop:20}}>
+          <TouchableOpacity onPress={()=>{navigation.navigate('Policy')}}>
+            <Text>Privacy Policy</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }

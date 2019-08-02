@@ -2,6 +2,7 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 import Home from './Home';
 import List from './List';
 import Place from './Place';
+import Policy from './Policy';
 
 const MainNavigator = createStackNavigator({
   Home: {
@@ -12,6 +13,9 @@ const MainNavigator = createStackNavigator({
   },
   Place: {
     screen: Place
+  },
+  Policy: {
+    screen: Policy
   }
 },
 {
